@@ -7,7 +7,7 @@ import random
 def show_leader_board():
     scores = get_scores()
     board = '\n'.join([str(x) for x in scores])
-    easygui.textbox('Teams        Score', 'Leader Board', board)
+    easygui.textbox('Scores        Teams', 'Leader Board', board)
 
 
 def get_scores():
@@ -15,13 +15,17 @@ def get_scores():
         reader = csv.reader(scoresFile, delimiter="\t", quotechar='^')
         lines = list(reader)
         scores = []
+        scoring = dict()
         for line in lines:
-            scores.append(line[0] + '\t' + line[1])
+            scoring.setdefault(line[0], 0)
+            scoring[line[0]] += (float(line[1]) - (float(line[2]) / 2))
+        for team in sorted(scoring, key = scoring.get, reverse = True):
+            scores.append("{0:.0f}\t{1}".format(round(scoring[team] * 10, 0), team))
     return scores
 
 
 def show_play():
-    with open('Teams.txt') as teamsFile:
+    with open('teams.txt') as teamsFile:
         reader = csv.reader(teamsFile, delimiter="\t")
         lines = list(reader)
         teams = []
@@ -61,7 +65,7 @@ def show_play():
                             quotechar='^', quoting=csv.QUOTE_MINIMAL)
         for line in lines:
             writer.writerow(line)
-        writer.writerow([team, totRes])
+        writer.writerow([team, totRes, demQuestions])
 
 
 def ask_question(tq):
