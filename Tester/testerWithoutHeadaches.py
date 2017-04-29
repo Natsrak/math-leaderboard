@@ -60,6 +60,7 @@ def show_play():
         reader = csv.reader(scoresFile, delimiter="\t",quotechar='^')
         lines = list(reader)
 
+    # python 3 - with open('scores.txt', 'w', newline='') as csvfile:
     with open('scores.txt', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter='\t',
                             quotechar='^', quoting=csv.QUOTE_MINIMAL)
