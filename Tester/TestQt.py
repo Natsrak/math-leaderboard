@@ -15,3 +15,4 @@ if __name__ == '__main__':
    app.connect(app, QtCore.SIGNAL("lastWindowClosed()"),
                app, QtCore.SLOT("quit()"))
    app.exec_()
+4

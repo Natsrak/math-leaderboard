@@ -1,3 +1,17 @@
-Bears	1	01
-Dolphins	1	01
-Marlins	1	01
+Dolphins	1	01
+Stingrays	4	05
+Bay Lynxes	5	05
+Dolphins	1	01
+Dolphins	5	05
+Foxes	1	01
+Bears	1	01
+Bears	5	05
+Dolphins	1	01
+Dolphins	1	01
+Bears	1	01
+Bears	1	01
+Marlins	1	01
+Bay Lynxes	0	01
+Bay Lynxes	1	01
+Bay Lynxes	1	1
+Stingrays	4	10
