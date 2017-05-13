@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Mon May 01 18:22:49 2017
+# Created: Sat May 13 16:55:48 2017
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,15 +21,21 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.leaderBoardButton = QtGui.QPushButton(self.centralwidget)
-        self.leaderBoardButton.setGeometry(QtCore.QRect(160, 200, 111, 41))
-        self.leaderBoardButton.setObjectName("leaderBoardButton")
         self.playButton = QtGui.QPushButton(self.centralwidget)
-        self.playButton.setGeometry(QtCore.QRect(360, 200, 101, 41))
+        self.playButton.setGeometry(QtCore.QRect(540, 180, 101, 41))
         self.playButton.setObjectName("playButton")
         self.quitButton = QtGui.QPushButton(self.centralwidget)
-        self.quitButton.setGeometry(QtCore.QRect(560, 200, 91, 41))
+        self.quitButton.setGeometry(QtCore.QRect(540, 390, 91, 41))
         self.quitButton.setObjectName("quitButton")
+        self.leaderBoardWidget = QtGui.QTableWidget(self.centralwidget)
+        self.leaderBoardWidget.setGeometry(QtCore.QRect(140, 180, 321, 251))
+        self.leaderBoardWidget.setObjectName("leaderBoardWidget")
+        self.leaderBoardWidget.setColumnCount(2)
+        self.leaderBoardWidget.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.leaderBoardWidget.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.leaderBoardWidget.setHorizontalHeaderItem(1, item)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1083, 21))
@@ -45,7 +51,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Acolympics", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "Welcome!  We are very excited to have you here to play the Acolympics!", None, QtGui.QApplication.UnicodeUTF8))
-        self.leaderBoardButton.setText(QtGui.QApplication.translate("MainWindow", "Leader Board", None, QtGui.QApplication.UnicodeUTF8))
         self.playButton.setText(QtGui.QApplication.translate("MainWindow", "Play", None, QtGui.QApplication.UnicodeUTF8))
         self.quitButton.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
+        self.leaderBoardWidget.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("MainWindow", "Team", None, QtGui.QApplication.UnicodeUTF8))
+        self.leaderBoardWidget.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("MainWindow", "Score", None, QtGui.QApplication.UnicodeUTF8))
 

@@ -32,24 +32,11 @@
      <string>Welcome!  We are very excited to have you here to play the Acolympics!</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="leaderBoardButton">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>200</y>
-      <width>111</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Leader Board</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="playButton">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>200</y>
+      <x>540</x>
+      <y>180</y>
       <width>101</width>
       <height>41</height>
      </rect>
@@ -61,8 +48,8 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>200</y>
+      <x>540</x>
+      <y>390</y>
       <width>91</width>
       <height>41</height>
      </rect>
@@ -70,6 +57,38 @@
     <property name="text">
      <string>Quit</string>
     </property>
+   </widget>
+   <widget class="QTableWidget" name="leaderBoardWidget">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>180</y>
+      <width>321</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Team</string>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Score</string>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+    </column>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
