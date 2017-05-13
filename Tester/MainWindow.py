@@ -5,6 +5,7 @@ import easygui
 import test_question
 import random
 from AskTeam import AskTeam
+from QuestionDialog import QuestionDialog
 
 
 class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
@@ -20,6 +21,9 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.playButton.clicked.connect(self.go_play)
         self.quitButton.clicked.connect(self.destroy)
 
+    def calc_score(self, correct, total):
+        return (float(correct) - (float(total) / 2))
+
     def show_scores(self):
         with open('scores.txt') as scoresFile:
             reader = csv.reader(scoresFile, delimiter="\t", quotechar='^')
@@ -28,7 +32,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
             scoring = dict()
             for line in lines:
                 scoring.setdefault(line[0], 0)
-                scoring[line[0]] += (float(line[1]) - (float(line[2]) / 2))
+                scoring[line[0]] += self.calc_score(line[1], line[2])
             self.leaderBoardWidget.setRowCount(scoring.__len__())
             for n, team in enumerate(sorted(scoring, key = scoring.get, reverse = True)):
                 self.leaderBoardWidget.setItem(n, 0, QtGui.QTableWidgetItem(team))
@@ -56,6 +60,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
             team = askTeams.teamsComboBox.currentText()
             demQuestions = askTeams.questionCountComboBox.currentText()
             self.askQuestions(team, demQuestions)
+            self.show_scores()
 
     def askQuestions(self, team, demQuestions):
         # This opens up the file with our questions
@@ -66,10 +71,13 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
             for line in lines:
                 tqs.append(test_question.TestQuestion(line))
 
+        question_dialog = QuestionDialog()
         totRes = 0
         random.shuffle(tqs)
         for x in range(int(demQuestions)):
-            totRes += self.ask_question(tqs[x])
+            question_dialog.ask_question(tqs[x])
+            question_dialog.exec_()
+            totRes += question_dialog.result
         print("Your " + team + " team score: " + str(totRes))
 
         with open('scores.txt') as scoresFile:
