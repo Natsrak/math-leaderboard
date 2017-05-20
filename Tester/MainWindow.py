@@ -24,6 +24,9 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def calc_score(self, correct, total):
         return (float(correct) - (float(total) / 2))
 
+    def format_score(self, score):
+        return "{0:.0f}".format(round(score * 10, 0))
+
     def show_scores(self):
         with open('scores.txt') as scoresFile:
             reader = csv.reader(scoresFile, delimiter="\t", quotechar='^')
@@ -36,22 +39,9 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
             self.leaderBoardWidget.setRowCount(scoring.__len__())
             for n, team in enumerate(sorted(scoring, key = scoring.get, reverse = True)):
                 self.leaderBoardWidget.setItem(n, 0, QtGui.QTableWidgetItem(team))
-                score = "{0:.0f}".format(round(scoring[team] * 10, 0))
+                score = self.format_score(scoring[team])
                 self.leaderBoardWidget.setItem(n, 1, QtGui.QTableWidgetItem(score))
         return scores
-
-    def ask_question(self, tq):
-        a = tq.possibles
-        random.shuffle(a)
-        q = easygui.buttonbox(tq.question, "?", choices=[a[0], a[1], a[2], a[3]])
-        answer = tq.answer
-        if q == answer:
-            result = 1
-            easygui.msgbox("Yay!")
-        else:
-            result = 0
-            easygui.msgbox("Try again!")
-        return result
 
     def go_play(self):
         askTeams = AskTeam()
@@ -59,27 +49,49 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         if play == QtGui.QDialog.Accepted:
             team = askTeams.teamsComboBox.currentText()
             demQuestions = askTeams.questionCountComboBox.currentText()
-            self.askQuestions(team, demQuestions)
+            self.loop_questions(team, demQuestions)
             self.show_scores()
 
-    def askQuestions(self, team, demQuestions):
+    def loop_questions(self, team, demQuestions):
+        total_questions = 0
+        total_correct = 0
+        level = 1
+
+        round_questions = int(demQuestions)
+        quiz = True
+        while quiz:
+            round_correct = self.ask_questions(team, round_questions, level)
+            total_correct += round_correct
+            total_questions += round_questions
+
+            quiz = False
+            if round_correct == round_questions:
+                level += 1
+                if level <= 4:
+                    quiz = easygui.ynbox('Level ' + str(level) + '!\n\nDo you wish to continue?', 'Congratulations', ('Yes', 'No'))
+
+            if not quiz:
+                easygui.msgbox("Your score was " + self.format_score(self.calc_score(total_correct, total_questions)))
+
+    def ask_questions(self, team, total_questions, level):
+        total_correct = 0
+        questions_filename = 'Math_' + str(level) + '.txt'
         # This opens up the file with our questions
-        with open('Questions.txt') as questionsFile:
+        with open(questions_filename) as questionsFile:
             reader = csv.reader(questionsFile, delimiter="\t")
             lines = list(reader)
             tqs = []
             for line in lines:
+                if len(line) != 5:
+                    continue
                 tqs.append(test_question.TestQuestion(line))
-
         question_dialog = QuestionDialog()
-        totRes = 0
         random.shuffle(tqs)
-        for x in range(int(demQuestions)):
+        for x in range(total_questions):
             question_dialog.ask_question(tqs[x])
             question_dialog.exec_()
-            totRes += question_dialog.result
-        print("Your " + team + " team score: " + str(totRes))
-
+            total_correct += question_dialog.result
+        print("Your " + team + " team score: " + str(total_correct))
         with open('scores.txt') as scoresFile:
             reader = csv.reader(scoresFile, delimiter="\t", quotechar='^')
             lines = list(reader)
@@ -90,4 +102,5 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
                                 quotechar='^', quoting=csv.QUOTE_MINIMAL)
             for line in lines:
                 writer.writerow(line)
-            writer.writerow([team, totRes, demQuestions])
+            writer.writerow([team, total_correct, total_questions])
+        return total_correct
